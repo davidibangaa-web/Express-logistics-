@@ -81,6 +81,40 @@
       }
     };
   </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBcvsXXC_SkKcovUqo4DMpqhM_wmhoDMZQ",
+  authDomain: "express-logistics-40825.firebaseapp.com",
+  projectId: "express-logistics-40825",
+  storageBucket: "express-logistics-40825.firebasestorage.app",
+  messagingSenderId: "191523858778",
+  appId: "1:191523858778:web:b6fc8dbac45d5925ab6b63"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// TRACK FUNCTION
+window.trackShipment = async function () {
+  const trackingNumber = document.getElementById("trackingInput").value;
+
+  const docRef = doc(db, "shipments", trackingNumber);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    alert(
+      "Status: " + data.status + "\n" +
+      "Location: " + data.location + "\n" +
+      "Date: " + data.date
+    );
+  } else {
+    alert("Tracking number not found");
+  }
+};
+</script>
 </body>
 </html>
