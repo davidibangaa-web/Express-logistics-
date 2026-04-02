@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Express Logistics</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background: white;
+  border-bottom: 3px solid #d32f2f;
+}
+
+/* SEARCH */
+.search-box {
+  padding: 15px;
+  background: #fff;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* HERO */
+.hero {
+  background: #2c2f63;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.hero button {
+  margin-top: 15px;
+  padding: 12px 25px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: white;
+}
+
+.grid div {
+  padding: 20px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+/* RESULT */
+.result {
+  display: none;
+  margin: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>☰</div>
+  <h3>Express Logistics</h3>
+  <div>🔍</div>
+</header>
+
+<div class="search-box">
+  <input id="trackInput" placeholder="Enter Tracking Number">
+</div>
+
+<div class="hero">
+  <h2>Simple, Affordable, Reliable</h2>
+  <button onclick="track()">Track Package</button>
+</div>
+
+<div id="result" class="result"></div>
+
+<div class="grid">
+  <div>📦 Ship</div>
+  <div>💳 Buy</div>
+  <div>🚚 Delivery</div>
+  <div>📬 PO Boxes</div>
+  <div>💰 Pricing</div>
+  <div>✋ Hold Mail</div>
+</div>
+
+<script>
+function track() {
+  let input = document.getElementById("trackInput").value;
+  let result = document.getElementById("result");
+
+  result.style.display = "block";
+
+  if(input === "EXP123") {
+    result.innerHTML = `
+      <h3>${input}</h3>
+      <p>Status: In Transit</p>
+      <p>Location: Lagos</p>
+    `;
+  } else {
+    result.innerHTML = "Tracking not found";
+  }
+}
+</script>
+
+</body>
+</html>
