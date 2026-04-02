@@ -1,68 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Express Logistics</title>
+<meta charset="UTF-8">
+<title>Express Logistics</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      margin: 0;
-      background: #f5f5f5;
-    }
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f5f5f5;
+}
 
-    .hero {
-      background: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d');
-      background-size: cover;
-      color: white;
-      padding: 60px 20px;
-      text-align: center;
-    }
+/* HERO */
+.hero {
+  background: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d');
+  background-size: cover;
+  color: white;
+  padding: 70px 20px;
+  text-align: center;
+}
 
-    .container {
-      padding: 20px;
-    }
+/* TRACK BOX */
+.track-box {
+  background: white;
+  padding: 20px;
+  margin: -40px 20px 20px;
+  border-radius: 10px;
+}
 
-    input {
-      width: 70%;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
+input {
+  width: 70%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
 
-    button {
-      padding: 12px 20px;
-      background: #f4c542;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button {
+  padding: 12px 20px;
+  background: #f4c542;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-    .card {
-      background: white;
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+/* SERVICES GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding: 20px;
+}
 
-    .timeline {
-      margin-top: 20px;
-    }
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    .step {
-      padding: 10px;
-      border-left: 4px solid #f4c542;
-      margin-bottom: 10px;
-    }
+.card:hover {
+  transform: scale(1.05);
+}
 
-    .error {
-      color: red;
-      margin-top: 10px;
-    }
-  </style>
+/* INFO SECTION */
+.info {
+  background: white;
+  padding: 30px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.timeline {
+  margin-top: 15px;
+}
+
+.step {
+  border-left: 3px solid gold;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* FOOTER */
+.footer {
+  background: #222;
+  color: white;
+  padding: 20px;
+  font-size: 14px;
+}
+</style>
 </head>
 
 <body>
@@ -71,13 +98,54 @@
   <h1>Track your shipment anytime</h1>
 </div>
 
-<div class="container">
+<div class="track-box">
   <h2>Track Your Shipment</h2>
-
   <input id="trackingInput" placeholder="Enter tracking number">
   <button onclick="track()">Track</button>
-
   <div id="result"></div>
+</div>
+
+<!-- SERVICES -->
+<div class="grid">
+  <div class="card">📦 Ship Package</div>
+  <div class="card">📍 Track Delivery</div>
+  <div class="card">💰 Calculate Price</div>
+  <div class="card">📬 Schedule Pickup</div>
+  <div class="card">🔒 Secure Shipping</div>
+  <div class="card">🌍 Global Delivery</div>
+</div>
+
+<!-- INFO -->
+<div class="info">
+  <h2>Simple, Affordable, Reliable</h2>
+  <p>
+    We deliver packages quickly and safely across the world.
+    Fast shipping, secure handling, and real-time tracking.
+  </p>
+
+  <button>Learn More</button>
+
+  <p style="font-size:12px; margin-top:10px;">
+    *For mailable items up to 70 lbs. Expected delivery in 2-5 days.
+  </p>
+</div>
+
+<!-- FEATURES -->
+<div class="grid">
+  <div class="card">Click-N-Ship®</div>
+  <div class="card">Buy Stamps</div>
+  <div class="card">Informed Delivery®</div>
+  <div class="card">PO Boxes™</div>
+  <div class="card">ZIP Code™ Lookup</div>
+  <div class="card">Change Address</div>
+</div>
+
+<!-- RESULT -->
+<div class="info" id="resultBox" style="display:none;"></div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>© 2026 Express Logistics. All rights reserved.</p>
 </div>
 
 <!-- Firebase -->
@@ -85,44 +153,44 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-  };
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+};
 
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-  async function track() {
-    const id = document.getElementById("trackingInput").value;
-    const result = document.getElementById("result");
+async function track() {
+  const id = document.getElementById("trackingInput").value;
+  const resultBox = document.getElementById("resultBox");
 
-    const doc = await db.collection("shipments").doc(id).get();
+  const doc = await db.collection("shipments").doc(id).get();
 
-    if (!doc.exists) {
-      result.innerHTML = "<p class='error'>❌ Tracking number not found</p>";
-      return;
-    }
-
-    const data = doc.data();
-
-    result.innerHTML = `
-      <div class="card">
-        <h3>Status: ${data.status}</h3>
-        <p><b>Location:</b> ${data.location}</p>
-        <p><b>Date:</b> ${data.date}</p>
-
-        <div class="timeline">
-          <div class="step">📦 Shipment Created</div>
-          <div class="step">🚚 In Transit</div>
-          <div class="step">📍 ${data.location}</div>
-          <div class="step">📬 Out for Delivery</div>
-          <div class="step">✅ Delivered</div>
-        </div>
-      </div>
-    `;
+  if (!doc.exists) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML = "<p style='color:red;'>❌ Tracking number not found</p>";
+    return;
   }
+
+  const data = doc.data();
+
+  resultBox.style.display = "block";
+  resultBox.innerHTML = `
+    <h3>Status: ${data.status}</h3>
+    <p><b>Location:</b> ${data.location}</p>
+    <p><b>Date:</b> ${data.date}</p>
+
+    <div class="timeline">
+      <div class="step">📦 Shipment Created</div>
+      <div class="step">🚚 In Transit</div>
+      <div class="step">📍 ${data.location}</div>
+      <div class="step">📬 Out for Delivery</div>
+      <div class="step">✅ Delivered</div>
+    </div>
+  `;
+}
 </script>
 
 </body>
