@@ -1,86 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Express Logistics</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Express Logistics</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      background: #f5f5f5;
-    }
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+}
 
-    h1 {
-      margin-top: 50px;
-    }
+/* HERO */
+.hero {
+  background: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d') center/cover;
+  height: 200px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+}
 
-    .box {
-      margin-top: 30px;
-    }
+/* MAIN */
+.container {
+  padding: 20px;
+}
 
-    input {
-      padding: 12px;
-      width: 250px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+h1 {
+  margin-bottom: 15px;
+}
 
-    button {
-      padding: 12px 20px;
-      background: gold;
-      border: none;
-      border-radius: 5px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-  </style>
+/* INPUT */
+.input-box {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+button {
+  background: #f4c400;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* RESULT CARD */
+.result {
+  display: none;
+  margin-top: 20px;
+  background: #111;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+</style>
 </head>
 
 <body>
 
+<div class="hero">
+  Track your shipment anytime
+</div>
+
+<div class="container">
   <h1>Track Your Shipment</h1>
 
-  <div class="box">
+  <div class="input-box">
     <input id="trackingInput" placeholder="Enter tracking number">
     <button onclick="trackShipment()">Track</button>
   </div>
 
-  <!-- 🔥 PASTE FIREBASE SCRIPT RIGHT HERE (BEFORE </body>) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+  <div id="result" class="result">
+    <p id="status"></p>
+    <p id="location"></p>
+    <p id="date"></p>
+  </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBcvsXXC_SkKcovUqo4DMpqhM_wmhoDMZQ",
-      authDomain: "express-logistics-40825.firebaseapp.com",
-      projectId: "express-logistics-40825",
-      storageBucket: "express-logistics-40825.firebasestorage.app",
-      messagingSenderId: "191523858778",
-      appId: "1:191523858778:web:b6fc8dbac45d5925ab6b63"
-    };
+  <div class="grid">
+    <div class="card" onclick="alert('Ship feature coming soon')">📦 Ship Package</div>
+    <div class="card" onclick="alert('Tracking system active')">📍 Track Delivery</div>
+    <div class="card" onclick="alert('Schedule pickup coming soon')">📬 Schedule Pickup</div>
+    <div class="card" onclick="alert('Secure delivery enabled')">🔒 Secure</div>
+  </div>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window.trackShipment = async function () {
-      const trackingNumber = document.getElementById("trackingInput").value;
-
-      const docRef = doc(db, "shipments", trackingNumber);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        alert(
-          "Status: " + data.status + "\n" +
-          "Location: " + data.location + "\n" +
-          "Date: " + data.date
-        );
-      } else {
-        alert("Tracking number not found");
-      }
-    };
-  </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
@@ -97,24 +133,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// TRACK FUNCTION
 window.trackShipment = async function () {
   const trackingNumber = document.getElementById("trackingInput").value;
 
   const docRef = doc(db, "shipments", trackingNumber);
   const docSnap = await getDoc(docRef);
 
+  const resultBox = document.getElementById("result");
+
   if (docSnap.exists()) {
     const data = docSnap.data();
-    alert(
-      "Status: " + data.status + "\n" +
-      "Location: " + data.location + "\n" +
-      "Date: " + data.date
-    );
+
+    resultBox.style.display = "block";
+    document.getElementById("status").innerText = "Status: " + data.status;
+    document.getElementById("location").innerText = "Location: " + data.location;
+    document.getElementById("date").innerText = "Date: " + data.date;
+
   } else {
-    alert("Tracking number not found");
+    resultBox.style.display = "block";
+    document.getElementById("status").innerText = "❌ Tracking number not found";
+    document.getElementById("location").innerText = "";
+    document.getElementById("date").innerText = "";
   }
 };
 </script>
+
 </body>
 </html>
