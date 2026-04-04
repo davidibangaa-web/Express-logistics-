@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Express Logistics</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <h1>Express Logistics</h1>
+</header>
+
+<section class="hero">
+  <h2>Fast. Reliable. Worldwide Delivery</h2>
+  
+  <input type="text" id="trackInput" placeholder="Enter Tracking Number">
+  <button onclick="goTrack()">Track Package</button>
+</section>
+
+<section class="features">
+  <div>
+    <h3>Fast Shipping</h3>
+    <p>Delivery within 2–5 business days</p>
+  </div>
+
+  <div>
+    <h3>Secure Delivery</h3>
+    <p>Your packages are safe with us</p>
+  </div>
+
+  <div>
+    <h3>Global Coverage</h3>
+    <p>We deliver worldwide</p>
+  </div>
+</section>
+
+<script>
+function goTrack(){
+  const id = document.getElementById("trackInput").value;
+  window.location.href = "tracking.html?id=" + id;
+}
+</script>
+
+</body>
+</html>
