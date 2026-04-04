@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background: #d40511;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.hero {
+  background: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d');
+  background-size: cover;
+  padding: 100px 20px;
+  text-align: center;
+  color: white;
+}
+
+.hero input {
+  padding: 15px;
+  width: 250px;
+  border: none;
+}
+
+.hero button {
+  padding: 15px;
+  background: #ffcc00;
+  border: none;
+  cursor: pointer;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  padding: 40px;
+}
+
+.features div {
+  text-align: center;
+}
